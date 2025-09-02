@@ -1,0 +1,125 @@
+Project Architecture & Pipeline
+1. High-Level Architecture
++--------------------------------------------------------+
+|                        GUI (PyQt)                      |
+|  - Input Field (Command / Natural Language)             |
+|  - Output Console (Results / Errors / Confirmations)    |
++--------------------------------------------------------+
+                       |         ▲
+                       |         |
+              Command / NL Input | Feedback
+                       v         |
++--------------------------------------------------------+
+|                 Command Engine Layer                   |
+|                                                        |
+|  1. Input Pre-Processor                                |
+|     - Detect mode (Direct Command / Natural Language)   |
+|     - Parse and normalize input                        |
+|                                                        |
+|  2. Safety Net & Command Validator                     |
+|     - Identify risky commands (rm, mv, overwrite)      |
+|     - Trigger confirmation prompts (sudo-like)         |
+|     - Validate paths, destinations, permissions        |
+|                                                        |
+|  3. Command Mapper                                     |
+|     - NL → System Command (via rule-based + NLP model) |
+|     - Alias support ("list files" → `ls`)              |
+|                                                        |
+|  4. Execution Manager                                  |
+|     - Sends safe/validated commands to system shell    |
+|     - Handles process mgmt (start, stop, kill, etc.)   |
++--------------------------------------------------------+
+                       |
+                       v
++--------------------------------------------------------+
+|                  System Interaction Layer              |
+|  - OS Shell (Linux/Mac: bash/zsh, Windows: cmd/powershell) |
+|  - File System APIs                                     |
+|  - Process Control APIs                                 |
+|  - Networking Utilities                                 |
++--------------------------------------------------------+
+                       |
+                       v
++--------------------------------------------------------+
+|                Response Handling & Output              |
+|  - Collect stdout / stderr                              |
+|  - Apply formatting, syntax highlighting               |
+|  - Send back to GUI                                    |
++--------------------------------------------------------+
+
+
+2. Pipeline (Step-by-Step Flow)
+
+User Input (GUI)
+
+User types either:
+
+A direct system command (ls -l)
+
+A natural language command (show me all files here)
+
+Pre-Processing
+
+Detect if input is natural language or direct shell command.
+
+Normalize input (strip spaces, handle case, etc.).
+
+Command Validation (Safety Net)
+
+If the command is destructive (e.g., rm file.txt, mv important.txt):
+
+Prompt user for confirmation (Are you sure? Y/N).
+
+Validate the target path exists and destination is given.
+
+Prevent ambiguous operations (rm with no args → blocked).
+
+Command Mapping (if NL)
+
+Convert natural language → actual system command.
+
+Example:
+
+“make a folder called test” → mkdir test
+
+“delete file report.txt” → rm report.txt (with safety confirmation).
+
+Execution Manager
+
+Pass the validated + safe command to OS shell.
+
+Manage processes (PID tracking, killing, etc.).
+
+Catch execution errors.
+
+System Interaction
+
+File operations → File system API.
+
+Process management → OS process API.
+
+Networking → Native system utilities.
+
+Response Handling
+
+Collect system output (stdout, stderr).
+
+Apply formatting → highlight paths, errors in red, etc.
+
+Show results in PyQt console.
+
+Feedback Loop
+
+If command was rejected/ambiguous → send back an error/clarification request.
+
+If successful → output results to user.
+
+3. Safety & Clarity Enforcement
+
+Confirmation Layer → For delete, move, overwrite, and creation.
+
+Path Validation → Prevents “rm /” or similar dangerous ops.
+
+Clear Prompts → When user says “move file”, system asks: “Move to which directory?”.
+
+NL Disambiguation → If multiple interpretations, system asks follow-up.
