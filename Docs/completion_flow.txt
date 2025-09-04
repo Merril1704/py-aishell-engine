@@ -1,0 +1,53 @@
+1. GUI Layer (PyQt)
+Goal: Build a user-friendly interface for input and output.
+
+Stage 1: Create main window with input field and output console.
+Stage 2: Connect input field to trigger command processing.
+Stage 3: Display results, errors, and confirmation prompts in the output console.
+2. Command Engine Layer
+Goal: Process user input, map natural language to system commands, and enforce safety.
+
+Stage 1: Input Pre-Processor
+Detect if input is a direct command or natural language.
+Normalize and parse input.
+Stage 2: Safety Net & Validator
+Identify risky commands (delete, move, overwrite).
+Prompt for confirmation and validate paths.
+Stage 3: Command Mapper
+Translate natural language to shell/system commands.
+Support aliases and macros.
+3. Execution Manager
+Goal: Safely execute validated commands and manage processes.
+
+Stage 1: Send commands to system shell.
+Stage 2: Handle process management (start, stop, kill).
+Stage 3: Catch and handle execution errors.
+4. System Interaction Layer
+Goal: Interface with OS for file, process, and network operations.
+
+Stage 1: Implement file system operations (list, create, delete, move).
+Stage 2: Implement process management.
+Stage 3: Implement networking utilities.
+5. Response Handling & Output
+Goal: Format and display results to the user.
+
+Stage 1: Collect stdout/stderr from executed commands.
+Stage 2: Apply formatting (syntax highlighting, error coloring).
+Stage 3: Send results back to GUI.
+6. Safety & Clarity Enforcement
+Goal: Prevent accidental destructive actions and clarify ambiguous requests.
+
+Stage 1: Confirmation prompts for risky actions.
+Stage 2: Path validation and protected commands.
+Stage 3: Interactive disambiguation for vague requests.
+
+
+Recommended Flow to Complete the Project
+Start with the GUI: Make sure users can enter commands and see output.
+Build the Command Engine: Process input, validate, and map commands.
+Implement Execution Manager: Safely run commands and manage processes.
+Develop System Interaction: Add file, process, and network operations.
+Integrate Response Handling: Format and display results in the GUI.
+Add Safety Features: Confirmation dialogs, path validation, and clarity prompts.
+Test End-to-End: Try various commands, confirm safety nets, and refine UX.
+Document & Polish: Update README, add usage examples, and improve UI/UX.

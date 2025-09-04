@@ -1,0 +1,36 @@
+py-aishell-engine/
+│
+├── README.md
+├── pipeline.txt
+├── requirements.txt
+├── main.py                # Entry point for the application
+│
+├── gui/                   # PyQt GUI components
+│   ├── __init__.py
+│   ├── window.py
+│   └── widgets.py
+│
+├── engine/                # Command engine logic
+│   ├── __init__.py
+│   ├── preprocessor.py    # Input pre-processing
+│   ├── safety.py          # Safety net & validation
+│   ├── mapper.py          # NL → shell command mapping
+│   └── executor.py        # Execution manager
+│
+├── system/                # System interaction layer
+│   ├── __init__.py
+│   ├── shell.py           # OS shell interaction
+│   ├── filesystem.py      # File system APIs
+│   ├── process.py         # Process management
+│   └── network.py         # Networking utilities
+│
+├── utils/                 # Utility functions/helpers
+│   ├── __init__.py
+│   └── formatting.py      # Output formatting, syntax highlighting
+│
+├── tests/                 # Unit and integration tests
+│   ├── __init__.py
+│   └── test_engine.py
+│
+└── scripts/               # Example scripts/macros
+    └── demo.py
